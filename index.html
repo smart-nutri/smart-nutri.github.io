@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SmartNutri Meal Planner — ระบบแนะนำและสุ่มเมนูอาหารเพื่อสุขภาพ ตามข้อมูลส่วนบุคคล โรคประจำตัว การแพ้อาหาร งบประมาณ และเวลาที่มี พร้อมคุณค่าทางโภชนาการครบถ้วน">
+  <meta name="keywords" content="เมนูอาหารสุขภาพ, โภชนาการ, สุ่มเมนู, แคลอรี, อาหารไทย, ลดน้ำหนัก, สร้างกล้ามเนื้อ">
+  <meta name="author" content="SmartNutri Meal Planner">
+  <title>SmartNutri Meal Planner — กินดีตามที่คุณต้องการ ครบทุกสารอาหาร</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥗</text></svg>">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a class="nav-brand" href="#" onclick="navigateTo('home')">
+        <div class="nav-logo">🥗</div>
+        <div class="nav-brand-text">
+          <h1>SmartNutri Meal Planner</h1>
+          <span>อร่อย ครบ ถ้วน เลือกได้ตามคุณ</span>
+        </div>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a class="nav-link active" data-page="home">หน้าหลัก</a>
+        <a class="nav-link" data-page="random" onclick="navigateTo('random')">สุ่มเมนู</a>
+        <a class="nav-link" data-page="menus">เมนูแนะนำ</a>
+        <a class="nav-link" data-page="knowledge">ความรู้โภชนาการ</a>
+        <a class="nav-link" data-page="about">เกี่ยวกับเรา</a>
+      </div>
+
+      <div class="nav-profile" onclick="openSettings()">
+        <div class="nav-profile-text">
+          <div class="greeting">สวัสดี, ก้อง</div>
+          <div class="action">ดูโปรไฟล์</div>
+        </div>
+        <div class="nav-avatar">👤</div>
+      </div>
+
+      <button class="nav-mobile-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ========== HOME CONTENT ========== -->
+  <div id="homeContent">
+
+    <!-- ===== Hero Section ===== -->
+    <section class="hero" id="heroSection">
+      <div class="container">
+        <div class="hero-content">
+          <h2>กินดีตามที่คุณต้องการ<br><span class="hero-subtitle">ครบทุกสารอาหารที่ร่างกายต้องการ</span></h2>
+          <p>ระบบแนะนำและสุ่มเมนูอาหารตามข้อมูลสุขภาพ ความชอบ และความต้องการของคุณ เพื่อให้คุณได้รับโภชนาการที่เหมาะสมในทุกมื้อ</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="startRandomMenu()">
+              ✨ สุ่มเมนูให้ฉันเลย
+            </button>
+            <button class="btn btn-outline" onclick="openSettings()">
+              ⚙️ ตั้งค่าความต้องการ
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-image-wrapper">
+            <img src="images/hero_food.png" alt="อาหารสุขภาพจานหลัก">
+            <div class="hero-image-badge">
+              <span class="badge-icon">✅</span>
+              <span>ครบ 5 หมู่</span>
+            </div>
+          </div>
+
+          <!-- Nutrition Summary Panel -->
+          <div class="nutrition-panel">
+            <div class="nutrition-panel-header">
+              <h3>ภาพรวมสารอาหารวันนี้</h3>
+              <a href="#" onclick="openSettings(); return false;">ดูทั้งหมด ›</a>
+            </div>
+            <div id="nutritionBars">
+              <!-- Rendered by JS -->
+            </div>
+            <p class="nutrition-note">* คำนวณจากความต้องการของคุณ</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Quick Settings Bar ===== -->
+    <section class="quick-settings">
+      <div class="container">
+        <div class="quick-settings-grid">
+          <div class="quick-setting-item" onclick="openSettings()">
+            <div class="qs-icon info">👤</div>
+            <div class="qs-text">
+              <h4>ข้อมูลของฉัน</h4>
+              <p class="qs-info-text">ดูและแก้ไขข้อมูลสุขภาพ และความต้องการ</p>
+            </div>
+          </div>
+          <div class="quick-setting-item" onclick="openSettings()">
+            <div class="qs-icon restrict">❤️</div>
+            <div class="qs-text">
+              <h4>ข้อจำกัด & ความชอบ</h4>
+              <p class="qs-restrict-text">จัดการอาหารที่แพ้ และไม่ชอบ</p>
+            </div>
+          </div>
+          <div class="quick-setting-item" onclick="openSettings()">
+            <div class="qs-icon budget">💰</div>
+            <div class="qs-text">
+              <h4>งบประมาณ</h4>
+              <p class="qs-budget-text">ประมาณต่อมื้อ 50 - 100 บาท</p>
+            </div>
+          </div>
+          <div class="quick-setting-item" onclick="openSettings()">
+            <div class="qs-icon time">⏱️</div>
+            <div class="qs-text">
+              <h4>เวลาทำอาหาร</h4>
+              <p class="qs-time-text">เวลาที่มี 30 นาที</p>
+            </div>
+          </div>
+          <div class="quick-setting-item" onclick="openSettings()">
+            <div class="qs-icon equip">🍳</div>
+            <div class="qs-text">
+              <h4>อุปกรณ์ที่มี</h4>
+              <p class="qs-equip-text">เตาแก๊ส, ไมโครเวฟ, หม้อทอดไร้น้ำมัน</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Recommended Menus Carousel ===== -->
+    <section class="section" id="recommendedSection">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title"><span class="icon">🍽️</span> เมนูแนะนำสำหรับคุณ</h2>
+          <a class="view-all" href="#" onclick="navigateTo('menus'); return false;">ดูทั้งหมด ›</a>
+        </div>
+
+        <div class="carousel-wrapper">
+          <button class="carousel-btn prev" onclick="menuCarousel && menuCarousel.prev()" aria-label="Previous">‹</button>
+          <div class="carousel-track" id="recommendedTrack">
+            <!-- Rendered by JS -->
+          </div>
+          <button class="carousel-btn next" onclick="menuCarousel && menuCarousel.next()" aria-label="Next">›</button>
+        </div>
+        <div class="carousel-dots" id="recommendedDots"></div>
+      </div>
+    </section>
+
+    <!-- ===== Goals + Articles + Shopping ===== -->
+    <section class="section">
+      <div class="container">
+        <div class="content-grid">
+          <!-- Left Column -->
+          <div>
+            <!-- Goals -->
+            <div style="margin-bottom: 50px;">
+              <div class="section-header">
+                <h2 class="section-title"><span class="icon">🎯</span> เมนูตามเป้าหมาย</h2>
+                <a class="view-all" href="#" onclick="navigateTo('menus'); return false;">ดูทั้งหมด ›</a>
+              </div>
+              <div class="goals-grid" id="goalsGrid">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Articles / Tips -->
+            <div>
+              <div class="section-header">
+                <h2 class="section-title"><span class="icon">📚</span> เคล็ดลับ & ความรู้โภชนาการ</h2>
+                <a class="view-all" href="#" onclick="navigateTo('knowledge'); return false;">ดูทั้งหมด ›</a>
+              </div>
+              <div class="articles-grid" id="articlesGrid">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Shopping List -->
+          <div>
+            <div class="shopping-section">
+              <div class="section-header">
+                <h2 class="section-title"><span class="icon">🛒</span> รายการซื้อวัตถุดิบของคุณ</h2>
+                <a class="view-all" href="#" onclick="clearShoppingList(); return false;">ล้างทั้งหมด ›</a>
+              </div>
+              <div class="shopping-list" id="shoppingList">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== About Section ===== -->
+    <section class="about-section" id="aboutPreview">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-content">
+            <h2>🥗 ที่มาและความเป็นมา</h2>
+            <p>
+              <strong>SmartNutri Meal Planner</strong> เป็นเว็บไซต์ที่พัฒนาขึ้นเพื่อช่วยให้ผู้ใช้งานสามารถเลือกหรือสุ่มเมนูอาหารที่เหมาะสมกับสุขภาพของตนเอง โดยอาศัยข้อมูลส่วนบุคคล เช่น อายุ เพศ น้ำหนัก ส่วนสูง โรคประจำตัว การแพ้อาหาร อาหารที่ไม่รับประทาน งบประมาณ เวลาที่ใช้ในการประกอบอาหาร และอุปกรณ์ทำอาหารที่มีอยู่
+            </p>
+            <p>
+              ระบบจะวิเคราะห์ข้อมูลของผู้ใช้ แล้วแนะนำเมนูอาหารที่เหมาะสม พร้อมแสดงคุณค่าทางโภชนาการ วิธีประกอบอาหาร ระยะเวลาในการทำ แหล่งซื้อวัตถุดิบ วิธีเลือกซื้อ วิธีเก็บรักษา และคำแนะนำทางโภชนาการที่อ้างอิงจากหน่วยงานที่ได้รับการยอมรับในระดับประเทศและนานาชาติ เพื่อส่งเสริมการรับประทานอาหารที่สมดุล ลดความเสี่ยงของการขาดสารอาหาร และสร้างความรู้ด้านโภชนาการให้แก่ผู้ใช้งาน
+            </p>
+          </div>
+          <div class="about-features">
+            <div class="about-feature">
+              <div class="af-icon">🔬</div>
+              <h4>วิเคราะห์ข้อมูลส่วนบุคคล</h4>
+              <p>คำนวณ TDEE และสารอาหารที่เหมาะกับคุณ</p>
+            </div>
+            <div class="about-feature">
+              <div class="af-icon">🎯</div>
+              <h4>แนะนำตามเป้าหมาย</h4>
+              <p>ลดน้ำหนัก สร้างกล้ามเนื้อ ควบคุมน้ำตาล</p>
+            </div>
+            <div class="about-feature">
+              <div class="af-icon">📊</div>
+              <h4>ข้อมูลโภชนาการครบ</h4>
+              <p>แคลอรี โปรตีน คาร์บ ไขมัน ใยอาหาร</p>
+            </div>
+            <div class="about-feature">
+              <div class="af-icon">📚</div>
+              <h4>อ้างอิงจากแหล่งที่น่าเชื่อถือ</h4>
+              <p>กรมอนามัย, WHO, สถาบันโภชนาการ มหิดล</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== PAGE: RANDOM MENU ========== -->
+  <div class="page-section" id="page-random">
+    <div class="container">
+      <div class="page-hero">
+        <h2>🎲 สุ่มเมนูอาหาร</h2>
+        <p>ให้ระบบเลือกเมนูอาหารที่เหมาะกับคุณ</p>
+      </div>
+      <div style="text-align: center;">
+        <button class="btn btn-primary" onclick="startRandomMenu()" style="font-size: 1.2rem; padding: 18px 40px;">
+          ✨ สุ่มเมนูให้ฉันเลย!
+        </button>
+        <p style="margin-top: 16px; color: var(--text-muted);">ระบบจะสุ่มจากเมนูที่เหมาะกับข้อมูลสุขภาพและความต้องการของคุณ</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: ALL MENUS ========== -->
+  <div class="page-section" id="page-menus">
+    <div class="container">
+      <div class="page-hero">
+        <h2>🍽️ เมนูแนะนำทั้งหมด</h2>
+        <p>เลือกเมนูที่เหมาะกับคุณ พร้อมข้อมูลโภชนาการครบถ้วน</p>
+      </div>
+      <div class="filter-bar" id="menusFilterBar">
+        <button class="filter-chip active" onclick="filterMenusPage(this)">ทั้งหมด</button>
+        <button class="filter-chip" onclick="filterMenusPage(this)">จานเดียว</button>
+        <button class="filter-chip" onclick="filterMenusPage(this)">ซุป</button>
+        <button class="filter-chip" onclick="filterMenusPage(this)">ยำ/สลัด</button>
+        <button class="filter-chip" onclick="filterMenusPage(this)">แกง</button>
+        <button class="filter-chip" onclick="filterMenusPage(this)">ผัด</button>
+      </div>
+      <div class="menu-grid" id="menusPageGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: KNOWLEDGE ========== -->
+  <div class="page-section" id="page-knowledge">
+    <div class="container">
+      <div class="page-hero">
+        <h2>📚 ความรู้โภชนาการ</h2>
+        <p>เคล็ดลับและความรู้ด้านโภชนาการ อ้างอิงจากแหล่งที่น่าเชื่อถือ</p>
+      </div>
+      <div class="articles-grid" id="knowledgePageGrid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: ABOUT ========== -->
+  <div class="page-section" id="page-about">
+    <div class="container">
+      <div class="page-hero">
+        <h2>🥗 เกี่ยวกับ SmartNutri Meal Planner</h2>
+        <p>ที่มาและความเป็นมาของโปรเจกต์</p>
+      </div>
+
+      <div style="max-width: 800px; margin: 0 auto;">
+        <div style="background: white; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-md); margin-bottom: 30px;">
+          <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">📋 ที่มาและความเป็นมา</h3>
+          <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 2; margin-bottom: 16px;">
+            <strong>SmartNutri Meal Planner</strong> เป็นเว็บไซต์ที่พัฒนาขึ้นเพื่อช่วยให้ผู้ใช้งานสามารถเลือกหรือสุ่มเมนูอาหารที่เหมาะสมกับสุขภาพของตนเอง โดยอาศัยข้อมูลส่วนบุคคล เช่น อายุ เพศ น้ำหนัก ส่วนสูง โรคประจำตัว การแพ้อาหาร อาหารที่ไม่รับประทาน งบประมาณ เวลาที่ใช้ในการประกอบอาหาร และอุปกรณ์ทำอาหารที่มีอยู่
+          </p>
+          <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 2; margin-bottom: 16px;">
+            ระบบจะวิเคราะห์ข้อมูลของผู้ใช้ แล้วแนะนำเมนูอาหารที่เหมาะสม พร้อมแสดงคุณค่าทางโภชนาการ วิธีประกอบอาหาร ระยะเวลาในการทำ แหล่งซื้อวัตถุดิบ วิธีเลือกซื้อ วิธีเก็บรักษา และคำแนะนำทางโภชนาการที่อ้างอิงจากหน่วยงานที่ได้รับการยอมรับในระดับประเทศและนานาชาติ เพื่อส่งเสริมการรับประทานอาหารที่สมดุล ลดความเสี่ยงของการขาดสารอาหาร และสร้างความรู้ด้านโภชนาการให้แก่ผู้ใช้งาน
+          </p>
+        </div>
+
+        <div style="background: white; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-md); margin-bottom: 30px;">
+          <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">🎯 วัตถุประสงค์</h3>
+          <div style="font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+            <ul style="padding-left: 20px;">
+              <li style="list-style: disc; margin-bottom: 10px;">ช่วยให้ผู้ใช้สามารถเลือกหรือสุ่มเมนูอาหารที่เหมาะกับสุขภาพส่วนบุคคล</li>
+              <li style="list-style: disc; margin-bottom: 10px;">ส่งเสริมการรับประทานอาหารที่สมดุลและมีคุณค่าทางโภชนาการครบถ้วน</li>
+              <li style="list-style: disc; margin-bottom: 10px;">ลดความเสี่ยงของการขาดสารอาหาร หรือการได้รับสารอาหารไม่เหมาะสม</li>
+              <li style="list-style: disc; margin-bottom: 10px;">สร้างความรู้ด้านโภชนาการให้แก่ผู้ใช้งาน ด้วยข้อมูลที่น่าเชื่อถือ</li>
+              <li style="list-style: disc; margin-bottom: 10px;">คำนึงถึงข้อจำกัดในชีวิตจริง เช่น งบประมาณ เวลา อุปกรณ์ที่มี</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="background: white; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-md); margin-bottom: 30px;">
+          <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">📚 แหล่งอ้างอิงด้านโภชนาการ</h3>
+          <div style="font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+            <ul style="padding-left: 20px;">
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>กรมอนามัย กระทรวงสาธารณสุข</strong> — ธงโภชนาการ, ข้อแนะนำการบริโภคอาหารสำหรับคนไทย</li>
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>สถาบันโภชนาการ มหาวิทยาลัยมหิดล</strong> — ฐานข้อมูลอาหารไทย, ตารางคุณค่าโภชนาการ</li>
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>World Health Organization (WHO)</strong> — Healthy Diet Fact Sheet, Sodium Reduction Guidelines</li>
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>Harvard T.H. Chan School of Public Health</strong> — The Healthy Eating Plate</li>
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>American Heart Association</strong> — Dietary Fiber Guidelines</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="background: white; border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-md);">
+          <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">⚙️ เทคโนโลยีที่ใช้</h3>
+          <div style="font-size: 0.95rem; color: var(--text-secondary); line-height: 2;">
+            <ul style="padding-left: 20px;">
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>HTML5</strong> — โครงสร้างเว็บไซต์แบบ Semantic</li>
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>CSS3</strong> — การออกแบบ Responsive, Animation, Design System</li>
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>JavaScript (Vanilla)</strong> — ระบบ SPA, การคำนวณ TDEE, การกรองเมนู</li>
+              <li style="list-style: disc; margin-bottom: 10px;"><strong>LocalStorage</strong> — จัดเก็บข้อมูลผู้ใช้, รายการโปรด, รายการซื้อ</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>🥗 SmartNutri Meal Planner</h3>
+          <p>ระบบแนะนำเมนูอาหารเพื่อสุขภาพ ที่คำนึงถึงความต้องการส่วนบุคคล โรคประจำตัว การแพ้อาหาร งบประมาณ และเวลาที่มี</p>
+        </div>
+        <div class="footer-col">
+          <h4>เมนู</h4>
+          <a href="#" onclick="navigateTo('home'); return false;">หน้าหลัก</a>
+          <a href="#" onclick="navigateTo('menus'); return false;">เมนูแนะนำ</a>
+          <a href="#" onclick="startRandomMenu(); return false;">สุ่มเมนู</a>
+        </div>
+        <div class="footer-col">
+          <h4>ข้อมูล</h4>
+          <a href="#" onclick="navigateTo('knowledge'); return false;">ความรู้โภชนาการ</a>
+          <a href="#" onclick="navigateTo('about'); return false;">เกี่ยวกับเรา</a>
+        </div>
+        <div class="footer-col">
+          <h4>แหล่งอ้างอิง</h4>
+          <a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet" target="_blank" rel="noopener">WHO — Healthy Diet</a>
+          <a href="#">กรมอนามัย</a>
+          <a href="#">สถาบันโภชนาการ มหิดล</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 SmartNutri Meal Planner — พัฒนาเพื่อการศึกษา</span>
+        <span>อ้างอิงข้อมูลจากแหล่งที่น่าเชื่อถือ</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== MODALS ========== -->
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal" style="max-width: 720px;">
+      <div class="modal-header">
+        <h2>⚙️ ตั้งค่าข้อมูลส่วนตัว</h2>
+        <button class="modal-close" onclick="closeModal('settingsModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="settingsForm" onsubmit="event.preventDefault(); saveUserProfile();">
+
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">👤 ข้อมูลพื้นฐาน</h3>
+          <div class="form-group">
+            <label class="form-label">ชื่อเล่น</label>
+            <input type="text" class="form-input" id="userName" placeholder="เช่น ก้อง, แพร">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">อายุ (ปี)</label>
+              <input type="number" class="form-input" id="userAge" min="10" max="100" value="25">
+            </div>
+            <div class="form-group">
+              <label class="form-label">เพศ</label>
+              <select class="form-select" id="userGender">
+                <option value="male">ชาย</option>
+                <option value="female" selected>หญิง</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">น้ำหนัก (กก.)</label>
+              <input type="number" class="form-input" id="userWeight" min="30" max="200" value="55">
+            </div>
+            <div class="form-group">
+              <label class="form-label">ส่วนสูง (ซม.)</label>
+              <input type="number" class="form-input" id="userHeight" min="100" max="250" value="160">
+            </div>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border-light); margin: 24px 0;">
+
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">🏥 โรคประจำตัว</h3>
+          <div class="form-group">
+            <div class="form-chips" id="diseasesChips">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">⚠️ อาหารที่แพ้</h3>
+          <div class="form-group">
+            <div class="form-chips" id="allergensChips">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">🚫 อาหารที่ไม่รับประทาน</h3>
+          <div class="form-group">
+            <input type="text" class="form-input" id="dislikedFoods" placeholder="เช่น ผักชี, ตับ, เลือด (คั่นด้วยเครื่องหมาย ,)">
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border-light); margin: 24px 0;">
+
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">💰 งบประมาณต่อมื้อ</h3>
+          <div class="form-group">
+            <div class="form-range-group">
+              <input type="range" class="form-range" id="budgetRange" min="20" max="300" value="100" step="10" oninput="updateBudgetDisplay(this.value)">
+              <span class="form-range-value" id="budgetValue">100 บาท</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">⏱️ เวลาทำอาหารที่มี</h3>
+          <div class="form-group">
+            <div class="form-range-group">
+              <input type="range" class="form-range" id="timeRange" min="5" max="120" value="30" step="5" oninput="updateTimeDisplay(this.value)">
+              <span class="form-range-value" id="timeValue">30 นาที</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px; color: var(--primary);">🍳 อุปกรณ์ทำอาหารที่มี</h3>
+          <div class="form-group">
+            <div class="form-chips" id="equipmentChips">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm" onclick="closeModal('settingsModal')">ยกเลิก</button>
+        <button class="btn btn-primary btn-sm" onclick="saveUserProfile()">💾 บันทึกข้อมูล</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu Detail Modal -->
+  <div class="modal-overlay" id="menuDetailModal">
+    <div class="modal" style="max-width: 700px;">
+      <div class="modal-header">
+        <h2>รายละเอียดเมนู</h2>
+        <button class="modal-close" onclick="closeModal('menuDetailModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Article Modal -->
+  <div class="modal-overlay" id="articleModal">
+    <div class="modal" style="max-width: 650px;">
+      <div class="modal-header">
+        <h2>บทความ</h2>
+        <button class="modal-close" onclick="closeModal('articleModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Random Menu Modal -->
+  <div class="modal-overlay" id="randomModal">
+    <div class="modal" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2>🎲 สุ่มเมนูอาหาร</h2>
+        <button class="modal-close" onclick="closeModal('randomModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="random-container">
+          <div class="random-slot" id="randomSlot">
+            <div class="placeholder-img food-1">🍳</div>
+          </div>
+          <div class="random-name" id="randomName">กดปุ่มเพื่อสุ่มเมนู!</div>
+          <div class="random-meta" id="randomMeta">เมนูจะถูกเลือกตามข้อมูลสุขภาพของคุณ</div>
+          <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="randomBtn" onclick="startRandomMenu()">🎲 สุ่มเมนู</button>
+            <button class="btn btn-outline" onclick="viewRandomResult()">📋 ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll to Top -->
+  <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()" aria-label="กลับด้านบน">↑</button>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
